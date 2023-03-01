@@ -1,7 +1,7 @@
-import Node from './utils/Node';
+import Node from '../utils/Node';
 import _ from 'lodash';
 import { useState, useEffect } from 'react';
-
+import React from 'react';
 
 export default function Home() {
   const [randomInt, setRandomInt] = useState(null);
