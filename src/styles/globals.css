@@ -115,3 +115,9 @@ button:active {
   background-color: hsl(342, 59%, 64%);
   color: white;
 }
+
+h1 {
+  margin-bottom: 50px;
+  font-size: 35px;
+  text-align: center;
+}

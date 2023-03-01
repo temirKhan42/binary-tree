@@ -1,7 +1,8 @@
 import Node from './utils/Node';
 var classNames = require('classnames');
 import _ from 'lodash';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
 
 export default function Home() {
   const [randomInt, setRandomInt] = useState(null);
@@ -9,7 +10,18 @@ export default function Home() {
   const [nodes, setNodes] = useState([]);
   const [level, setLevel] = useState(1);
 
-  const test = [33, 74, 89, 2, 0];
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.code === 'Space') {
+        handleClick(event);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   const getRandomInt = (min, max) => {
     min = Math.ceil(min);
@@ -56,21 +68,24 @@ export default function Home() {
   }
 
   const handleClick = (e) => {
+    e.preventDefault();
     const MIN = -100;
     const MAX = 101;
-    e.preventDefault();
-    const rand = getRandomInt(MIN, MAX)
-    setRandomInt(rand);
-    setNumbers([...numbers, rand]);
-    const tree = buildTree([...numbers, rand]);
-    const newNodes = tree.getNodes();
-    tree && setNodes(newNodes);
-    const newLevel = getLevelFromNodesLength(newNodes.length);
-    nodes && setLevel(newLevel);
+    const rand = getRandomInt(MIN, MAX);
+    setRandomInt((prevRendInt) => rand);
+    setNumbers((prevNumbers) => {
+      const tree = buildTree([...prevNumbers, rand]);
+      const newNodes = tree.getNodes();
+      setNodes((prevNodes) => newNodes);
+      const newLevel = getLevelFromNodesLength(newNodes.length);
+      setLevel((prevLevel) => newLevel);  
+      return [...prevNumbers, rand];
+    });
   }
 
   return (
-    <div className='container'>
+    <div className='container' id='container'>
+      <h1>Binary search tree</h1>
       <div className='header' onClick={handleClick}>  
         <button>Click here to add random number <span>{randomInt ? randomInt : '-'}</span></button>
       </div>
