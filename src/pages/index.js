@@ -1,5 +1,4 @@
 import Node from './utils/Node';
-var classNames = require('classnames');
 import _ from 'lodash';
 import { useState, useEffect } from 'react';
 
